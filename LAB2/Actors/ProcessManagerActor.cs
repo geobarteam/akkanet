@@ -1,8 +1,9 @@
 using Akka.Actor;
-using DeploymentPipeline.Messages;
+using CessnaActorSystem.Messages;
+using System;
 using System.Collections.Generic;
 
-namespace DeploymentPipeline.Actors
+namespace CessnaActorSystem.Actors
 {
     public class ProcessManagerActor : ReceiveActor
     {
@@ -28,19 +29,33 @@ namespace DeploymentPipeline.Actors
 
                 _pipelines.Add(pipelineName, newChildActorRef);
 
-                ColorConsole.WriteLineCyan($"ProcessManager created new pipeline for '{pipelineName}' (Total Pipelines: '{_pipelines.Count}')");
+                ColorConsole.WriteLineGreen($"ProcessManager created new pipeline for '{pipelineName}' (Total Pipelines: '{_pipelines.Count}')");
             }
         }
 
         #region Lifecycle hooks
         protected override void PreStart()
         {
-            ColorConsole.WriteLineGreen("ProcessManager PreStart");
+            ColorConsole.WriteLineBlue("ProcessManagerActor PreStart");
         }
 
         protected override void PostStop()
         {
-            ColorConsole.WriteLineGreen("ProcessManager PostStop");
+            ColorConsole.WriteLineBlue("ProcessManagerActor PostStop");
+        }
+
+        protected override void PreRestart(Exception reason, object message)
+        {
+            ColorConsole.WriteLineBlue("ProcessManager PreRestart because: " + reason);
+
+            base.PreRestart(reason, message);
+        }
+
+        protected override void PostRestart(Exception reason)
+        {
+            ColorConsole.WriteLineBlue("ProcessManager PostRestart because: " + reason);
+
+            base.PostRestart(reason);
         }
 
         #endregion

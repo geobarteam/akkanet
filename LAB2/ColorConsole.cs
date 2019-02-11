@@ -1,6 +1,6 @@
 using System;
 
-namespace DeploymentPipeline
+namespace CessnaActorSystem
 {
     public class ColorConsole
     {
@@ -40,6 +40,5 @@ namespace DeploymentPipeline
         public static void WriteMagenta(string line)
             => WriteLine(ConsoleColor.Magenta, line);
 
-    }
     }
 }

@@ -1,8 +1,8 @@
 using System;
 using Akka.Actor;
-using DeploymentPipeline.Messages;
+using CessnaActorSystem.Messages;
 
-namespace DeploymentPipeline.Actors
+namespace CessnaActorSystem.Actors
 {
     public class RegisterInstallerActor: ReceiveActor
     {
@@ -19,5 +19,32 @@ namespace DeploymentPipeline.Actors
 
             ColorConsole.WriteLineGreen($"{DateTime.Now} - Registring installer '{message.InstallerName}'");
         }
+
+        #region Lifecycle hooks
+        protected override void PreStart()
+        {
+            ColorConsole.WriteLineBlue("RegisterInstallerActor PreStart");
+        }
+
+        protected override void PostStop()
+        {
+            ColorConsole.WriteLineBlue("RegisterInstallerActor PostStop");
+        }
+
+        protected override void PreRestart(Exception reason, object message)
+        {
+            ColorConsole.WriteLineBlue("RegisterInstallerActor PreRestart because: " + reason);
+
+            base.PreRestart(reason, message);
+        }
+
+        protected override void PostRestart(Exception reason)
+        {
+            ColorConsole.WriteLineBlue("RegisterInstallerActor PostRestart because: " + reason);
+
+            base.PostRestart(reason);
+        }
+        
+        #endregion
     }
 }

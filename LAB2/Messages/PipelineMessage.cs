@@ -1,4 +1,4 @@
-namespace DeploymentPipeline.Messages
+namespace CessnaActorSystem.Messages
 {
     public class PipelineMessage
     {

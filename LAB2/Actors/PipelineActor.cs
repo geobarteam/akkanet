@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Akka.Actor;
-using DeploymentPipeline.Messages;
+using CessnaActorSystem.Messages;
 
-namespace DeploymentPipeline.Actors
+namespace CessnaActorSystem.Actors
 {
     public class PipelineActor : ReceiveActor
     {
@@ -17,7 +18,7 @@ namespace DeploymentPipeline.Actors
             Receive<PipelineMessage>(message => this.Filters.First().Tell(message));
         }
 
-         public static IList<IActorRef> BuildPipeline(string pipelineName)
+        public static IList<IActorRef> BuildPipeline(string pipelineName)
         {
             var registerInstallerActorRef =  Context.ActorOf(Props.Create(() => new RegisterInstallerActor()), "RegisterInstallerActor");
 
@@ -26,5 +27,31 @@ namespace DeploymentPipeline.Actors
 
             return pipeline;
         }
+
+        #region Lifecycle hooks
+        protected override void PreStart()
+        {
+            ColorConsole.WriteLineBlue($"PipelineActor for '{this.PipelineName}' PreStart");
+        }
+
+        protected override void PostStop()
+        {
+            ColorConsole.WriteLineBlue($"PipelineActor for '{this.PipelineName}' PostStop");
+        }
+
+        protected override void PreRestart(Exception reason, object message)
+        {
+            ColorConsole.WriteLineBlue($"PipelineActor for '{this.PipelineName}' PreRestart");
+
+            base.PreRestart(reason, message);
+        }
+
+        protected override void PostRestart(Exception reason)
+        {
+            ColorConsole.WriteLineBlue($"PipelineActor for '{this.PipelineName}' PostRestart");
+
+            base.PostRestart(reason);
+        }
+        #endregion
     }
 }
