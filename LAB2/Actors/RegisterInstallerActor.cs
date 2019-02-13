@@ -14,7 +14,7 @@ namespace CessnaActorSystem.Actors
         private void HandleRegisterInstallerActor(PipelineMessage message)
         {
             if (!message.InstallerName.Contains("-")){
-                throw new ApplicationException("Invalid version name!");
+                throw new InvalidMessageException("Invalid message");
             }
 
             ColorConsole.WriteLineGreen($"{DateTime.Now} - Registring installer '{message.InstallerName}'");

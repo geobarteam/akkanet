@@ -31,7 +31,7 @@ namespace CessnaActorSystem.Actors
 
                 ColorConsole.WriteLineGreen($"ProcessManager created new pipeline for '{pipelineName}' (Total Pipelines: '{_pipelines.Count}')");
             }
-        }
+        }       
 
         #region Lifecycle hooks
         protected override void PreStart()

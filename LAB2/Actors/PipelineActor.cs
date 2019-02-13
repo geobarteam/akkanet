@@ -27,6 +27,26 @@ namespace CessnaActorSystem.Actors
 
             return pipeline;
         }
+        /*
+        protected override SupervisorStrategy SupervisorStrategy()
+        {
+            return new OneForOneStrategy (
+                10, // maxNumberOfRetries
+                TimeSpan.FromSeconds(30), // withinTimeRange
+                x => // localOnlyDecider
+                {
+                    //Maybe we consider InvalidMessageException to not be application critical
+                    //so we just ignore the error and keep going.
+                    if (x is InvalidMessageException) return Directive.Resume;
+
+                    //Error that we cannot recover from, stop the failing actor
+                    else if (x is NotSupportedException) return Directive.Stop;
+
+                    //In all other cases, just restart the failing actor
+                    else return Directive.Restart;
+                });
+        }
+         */
 
         #region Lifecycle hooks
         protected override void PreStart()
@@ -41,14 +61,14 @@ namespace CessnaActorSystem.Actors
 
         protected override void PreRestart(Exception reason, object message)
         {
-            ColorConsole.WriteLineBlue($"PipelineActor for '{this.PipelineName}' PreRestart");
+            ColorConsole.WriteLineBlue($"PipelineActor for '{this.PipelineName}' PostStop");
 
             base.PreRestart(reason, message);
         }
 
         protected override void PostRestart(Exception reason)
         {
-            ColorConsole.WriteLineBlue($"PipelineActor for '{this.PipelineName}' PostRestart");
+            ColorConsole.WriteLineBlue($"PipelineActor for '{this.PipelineName}' PostStop");
 
             base.PostRestart(reason);
         }
