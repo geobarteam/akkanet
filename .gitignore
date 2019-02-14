@@ -23,6 +23,8 @@ src/DB/Migrations/migration.sql
 UpgradeLog3.htm
 /vs
 /.vs
+*/vs
+*/.vs
 /node_modules
 
 
