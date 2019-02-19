@@ -1,2 +1,2 @@
-Two labs that accompany my course on Akka.Net
+Labs for my course on Akka.Net
 
