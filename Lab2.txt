@@ -1,0 +1,46 @@
+1) add lifecycle events to RegisterInstallerActor.cs
+ #region Lifecycle hooks
+        protected override void PreStart()
+        {
+            ColorConsole.WriteLineBlue("RegisterInstallerActor PreStart");
+        }
+
+        protected override void PostStop()
+        {
+            ColorConsole.WriteLineBlue("RegisterInstallerActor PostStop");
+        }
+
+        protected override void PreRestart(Exception reason, object message)
+        {
+            ColorConsole.WriteLineBlue("RegisterInstallerActor PreRestart because: " + reason);
+
+            base.PreRestart(reason, message);
+        }
+
+        protected override void PostRestart(Exception reason)
+        {
+            ColorConsole.WriteLineBlue("RegisterInstallerActor PostRestart because: " + reason);
+
+            base.PostRestart(reason);
+        }
+        
+        #endregion
+
+2) Add to ProcessManagerActor.cs:
+public void CreatePipeLineIfNotExist(string pipelineName)
+        {
+            if (!_pipelines.ContainsKey(pipelineName))
+            {
+                IActorRef newChildActorRef =
+                    Context.ActorOf(Props.Create(() => new PipelineActor(pipelineName)), "Pipeline" + pipelineName);
+
+                _pipelines.Add(pipelineName, newChildActorRef);
+
+                ColorConsole.WriteLineGreen($"ProcessManager created new pipeline for '{pipelineName}' (Total Pipelines: '{_pipelines.Count}')");
+            }
+        }       
+
+3) Uncomment line CessnaActorSystemService.cs 41
+4) Demo app with error: register, cessna001
+5) Uncomment PipelineActor.cs, line 30
+6) Restart Demo, look at lifecycle
